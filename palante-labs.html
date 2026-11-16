@@ -3,20 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Palante Labs | Project on Belonging — Design Draft</title>
+<title>Palante Labs | Project on Belonging</title>
 <meta name="description" content="Palante Labs is Project on Belonging's residential exchange based in Cali, Colombia, turning convening introductions into working relationships.">
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
+<script src="site.js" defer></script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 
 <header class="site-header">
   <div class="nav-row">
-    <a class="logo" href="index.html">Project on Belonging</a>
-    <nav class="main-nav"><ul><li><a href="convene.html">Convene</a></li><li><a href="connect.html">Connect</a></li><li><a href="collaborate.html">Collaborate</a></li><li><a href="invest.html">Invest</a></li><li><a href="about.html">About</a></li><li><a class="nav-cta" href="partner-with-us.html">Partner With Us</a></li></ul></nav>
+    <a class="logo" href="index.html"><img class="logo-mark" src="images/logo.png" width="40" height="37" alt=""><span>Project on Belonging</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <nav class="main-nav" id="site-nav" aria-label="Main"><ul><li><a href="convene.html">Convene</a><ul class="dropdown"><li><a href="festival-of-the-diaspora.html">Festival of the Diaspora</a></li><li><a href="diaspora-dialogues.html">Diaspora Dialogues</a></li><li><a href="sixth-region-summit.html">Sixth Region Summit</a></li></ul></li><li><a class="is-section" href="connect.html">Connect</a><ul class="dropdown"><li><a href="palante-labs.html" aria-current="page">Palante Labs</a></li><li><a href="pob-studios.html">PoB Studios</a></li></ul></li><li><a href="collaborate.html">Collaborate</a><ul class="dropdown"><li><a href="expectant-advisory.html">Expectant Advisory</a></li></ul></li><li><a href="invest.html">Invest</a><ul class="dropdown"><li><a href="palante-capital.html">Palante Capital</a></li><li><a href="marketplace.html">Marketplace</a></li></ul></li><li><a href="about.html">About</a></li><li><a class="nav-cta" href="partner-with-us.html">Partner With Us</a></li></ul></nav>
   </div>
 </header>
 
-<main>
+<main id="main">
 
 
 <section class="hero" style="min-height:52vh;background-image:url('images/petronio.jpg');">
@@ -52,7 +59,7 @@
     </div>
   </div>
     <div class="card">
-    <div class="card-photo"><img class="real-img" src="images/petronio.jpg" alt="Petronio Alvarez Festival"></div>
+    <div class="card-photo"><img loading="lazy" decoding="async" class="real-img" src="images/petronio.jpg" alt="Petronio Alvarez Festival"></div>
     <div class="card-body">
       
       <h3>Petronio Alvarez Delegation</h3>
@@ -102,25 +109,24 @@
 </main>
 
 
-<section class="section dot-pattern" style="padding-top:48px;padding-bottom:48px;background:var(--navy-light);">
+<section class="section related" aria-labelledby="related-title">
   <div class="wrap">
-    <span class="kicker" style="color:var(--yellow);">Keep exploring</span>
-    <div class="grid grid-3" style="margin-top:.8em;">
-      <a class="card-link" href="connect.html" style="display:block;">Connect →</a><a class="card-link" href="palante-capital.html" style="display:block;">Palante Capital →</a><a class="card-link" href="partner-with-us.html" style="display:block;">Host a Residency →</a>
-    </div>
+    <h3 class="related-title" id="related-title">Keep exploring</h3>
+    <div class="related-grid"><a class="related-card" href="connect.html" style="--img:url('images/colombia-dinner.jpg');--pos:50% 40%;"><span class="related-name">Connect</span><span class="related-arrow" aria-hidden="true">→</span></a><a class="related-card" href="palante-capital.html" style="--img:url('images/palante-capital.jpg');--pos:50% 30%;"><span class="related-kicker">Invest</span><span class="related-name">Palante Capital</span><span class="related-arrow" aria-hidden="true">→</span></a><a class="related-card" href="partner-with-us.html" style="--img:url('images/power-of-diaspora.jpg');--pos:50% 50%;"><span class="related-name">Host a Residency</span><span class="related-arrow" aria-hidden="true">→</span></a></div>
   </div>
 </section>
 
 <footer class="site-footer">
   <div class="wrap">
+    <a class="footer-logo" href="index.html"><img class="logo-mark" src="images/logo.png" width="48" height="45" alt="Project on Belonging"></a>
     <div class="footer-grid">
       <div><h4>Convene</h4><ul><li><a href="festival-of-the-diaspora.html">Festival of the Diaspora</a></li><li><a href="diaspora-dialogues.html">Diaspora Dialogues</a></li><li><a href="sixth-region-summit.html">Sixth Region Summit</a></li></ul></div>
       <div><h4>Connect</h4><ul><li><a href="palante-labs.html">Palante Labs</a></li><li><a href="pob-studios.html">PoB Studios</a></li></ul></div>
       <div><h4>Collaborate</h4><ul><li><a href="expectant-advisory.html">Expectant Advisory</a></li></ul></div>
       <div><h4>Invest</h4><ul><li><a href="palante-capital.html">Palante Capital</a></li><li><a href="marketplace.html">Marketplace</a></li></ul></div>
-      <div><h4>Platform</h4><ul><li><a href="about.html">About</a></li><li><a href="partner-with-us.html">Partner with us</a></li><li><a href="mailto:info@projectonbelonging.org">info@projectonbelonging.org</a></li></ul></div>
+      <div><h4>Platform</h4><ul><li><a href="about.html">About</a></li><li><a href="partner-with-us.html">Partner with us</a></li><li><a href="mailto:info@projectonbelonging.org">info@projectonbelonging.org</a></li><li><a href="https://www.youtube.com/@projectonbelonging">YouTube</a></li><li><a href="#">LinkedIn</a></li></ul></div>
     </div>
-    <div class="footer-bottom">© 2026 Project on Belonging. Design draft — not for public use.</div>
+    <div class="footer-bottom">© 2026 Project on Belonging. All rights reserved.</div>
   </div>
 </footer>
 

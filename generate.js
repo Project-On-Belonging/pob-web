@@ -26,19 +26,39 @@ const NAV = [
 ];
 
 function navHTML(){
-  const items = NAV.map(item => `<li><a href="${item.href}">${item.label}</a></li>`).join("");
+  const items = NAV.map(item => `<li><a href="${item.href}">${item.label}</a>${item.children ? `<ul class="dropdown">${item.children.map(([h,l]) => `<li><a href="${h}">${l}</a></li>`).join("")}</ul>` : ""}</li>`).join("");
   return `<ul>${items}<li><a class="nav-cta" href="partner-with-us.html">Partner With Us</a></li></ul>`;
 }
 
+/* "Keep exploring" tiles: destination photo, optional section kicker, label */
+const RELATED_DEST = {
+  "convene.html": ["fotd-staircase.jpg", "50% 40%", ""],
+  "connect.html": ["colombia-dinner.jpg", "50% 40%", ""],
+  "collaborate.html": ["prea-conf.jpg", "50% 50%", ""],
+  "invest.html": ["pitch-competition.jpg", "50% 45%", ""],
+  "about.html": ["cordell-portrait.jpg", "50% 22%", ""],
+  "partner-with-us.html": ["power-of-diaspora.jpg", "50% 50%", ""],
+  "expectant-advisory.html": ["concordia-stage.jpg", "50% 45%", "Collaborate"],
+  "marketplace.html": ["feira-preta.jpg", "50% 50%", "Invest"],
+  "palante-capital.html": ["palante-capital.jpg", "50% 30%", "Invest"],
+  "palante-labs.html": ["petronio.jpg", "50% 45%", "Connect"],
+  "pob-studios.html": ["etnica-tv.jpg", "50% 40%", "Connect"],
+  "festival-of-the-diaspora.html": ["fotd-staircase.jpg", "50% 40%", "Convene"],
+  "diaspora-dialogues.html": ["diaspora-dialogues.jpg", "50% 40%", "Convene"],
+  "sixth-region-summit.html": ["concordia-group.jpg", "50% 40%", "Convene"],
+};
+
 function relatedHTML(related){
   if(!related || !related.length) return "";
+  const tile = ([h, l]) => {
+    const [img, pos, kicker] = RELATED_DEST[h];
+    return `<a class="related-card" href="${h}" style="--img:url('images/${img}');--pos:${pos};">${kicker ? `<span class="related-kicker">${kicker}</span>` : ""}<span class="related-name">${l}</span><span class="related-arrow" aria-hidden="true">→</span></a>`;
+  };
   return `
-<section class="section dot-pattern" style="padding-top:48px;padding-bottom:48px;background:var(--navy-light);">
+<section class="section related" aria-labelledby="related-title">
   <div class="wrap">
-    <span class="kicker" style="color:var(--yellow);">Keep exploring</span>
-    <div class="grid grid-3" style="margin-top:.8em;">
-      ${related.map(([h,l]) => `<a class="card-link" href="${h}" style="display:block;">${l} →</a>`).join("")}
-    </div>
+    <h3 class="related-title" id="related-title">Keep exploring</h3>
+    <div class="related-grid">${related.map(tile).join("")}</div>
   </div>
 </section>`;
 }
@@ -49,20 +69,27 @@ function layout({ title, description, body, related }){
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${title} | Project on Belonging — Design Draft</title>
+<title>${title} | Project on Belonging</title>
 <meta name="description" content="${description}">
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
+<script src="site.js" defer></script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 
 <header class="site-header">
   <div class="nav-row">
-    <a class="logo" href="index.html">Project on Belonging</a>
-    <nav class="main-nav">${navHTML()}</nav>
+    <a class="logo" href="index.html"><img class="logo-mark" src="images/logo.png" width="40" height="37" alt=""><span>Project on Belonging</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <nav class="main-nav" id="site-nav" aria-label="Main">${navHTML()}</nav>
   </div>
 </header>
 
-<main>
+<main id="main">
 ${body}
 </main>
 
@@ -70,14 +97,15 @@ ${relatedHTML(related)}
 
 <footer class="site-footer">
   <div class="wrap">
+    <a class="footer-logo" href="index.html"><img class="logo-mark" src="images/logo.png" width="48" height="45" alt="Project on Belonging"></a>
     <div class="footer-grid">
       <div><h4>Convene</h4><ul><li><a href="festival-of-the-diaspora.html">Festival of the Diaspora</a></li><li><a href="diaspora-dialogues.html">Diaspora Dialogues</a></li><li><a href="sixth-region-summit.html">Sixth Region Summit</a></li></ul></div>
       <div><h4>Connect</h4><ul><li><a href="palante-labs.html">Palante Labs</a></li><li><a href="pob-studios.html">PoB Studios</a></li></ul></div>
       <div><h4>Collaborate</h4><ul><li><a href="expectant-advisory.html">Expectant Advisory</a></li></ul></div>
       <div><h4>Invest</h4><ul><li><a href="palante-capital.html">Palante Capital</a></li><li><a href="marketplace.html">Marketplace</a></li></ul></div>
-      <div><h4>Platform</h4><ul><li><a href="about.html">About</a></li><li><a href="partner-with-us.html">Partner with us</a></li><li><a href="mailto:info@projectonbelonging.org">info@projectonbelonging.org</a></li></ul></div>
+      <div><h4>Platform</h4><ul><li><a href="about.html">About</a></li><li><a href="partner-with-us.html">Partner with us</a></li><li><a href="mailto:info@projectonbelonging.org">info@projectonbelonging.org</a></li><li><a href="https://www.youtube.com/@projectonbelonging">YouTube</a></li><li><a href="#">LinkedIn</a></li></ul></div>
     </div>
-    <div class="footer-bottom">© 2026 Project on Belonging. Design draft — not for public use.</div>
+    <div class="footer-bottom">© 2026 Project on Belonging. All rights reserved.</div>
   </div>
 </footer>
 
@@ -85,15 +113,43 @@ ${relatedHTML(related)}
 </html>`;
 }
 
+/* nav "current page" marking + lazy-loaded images, applied to every generated page */
+const SECTION = {
+  convene: ["convene", "festival-of-the-diaspora", "diaspora-dialogues", "sixth-region-summit"],
+  connect: ["connect", "palante-labs", "pob-studios"],
+  collaborate: ["collaborate", "expectant-advisory"],
+  invest: ["invest", "palante-capital", "marketplace"],
+  about: ["about"],
+};
+function enhance(filename, html){
+  const page = filename.replace(/\.html$/, "");
+  const navM = html.match(/<nav class="main-nav"[\s\S]*?<\/nav>/);
+  if(navM){
+    let nav = navM[0];
+    const link = `href="${page}.html"`;
+    const sec = Object.keys(SECTION).find(k => SECTION[k].includes(page));
+    if(page === "partner-with-us") nav = nav.replace(`<a class="nav-cta" ${link}>`, `<a class="nav-cta" ${link} aria-current="page">`);
+    else if(sec){
+      nav = nav.replace(`<li><a ${link}>`, `<li><a ${link} aria-current="page">`);
+      if(page !== sec) nav = nav.replace(`<li><a href="${sec}.html"`, `<li><a class="is-section" href="${sec}.html"`);
+      nav = nav.replace(new RegExp(`(<ul class="dropdown">[\\s\\S]*?)<li><a ${link}>`), `$1<li><a ${link} aria-current="page">`);
+    }
+    html = html.replace(navM[0], nav);
+  }
+  return html.replace(/<img (?![^>]*logo-mark)(?![^>]*loading=)([^>]*)>/g, '<img loading="lazy" decoding="async" $1>');
+}
+
 function write(filename, html){
+  html = enhance(filename, html);
   fs.writeFileSync(path.join(DIST, filename), html, "utf8");
 }
 
 /* small reusable pieces */
-function hero(eyebrow, h1, lede, ctaRow, photoCaption, photoUrl){
-  const bg = photoUrl ? `background-image:url('${photoUrl}');` : `background:linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);`;
+function hero(eyebrow, h1, lede, ctaRow, photoCaption, photoUrl, bgPos, cls){
+  const bg = photoUrl ? `background-image:url('${photoUrl}');${bgPos ? `background-position:${bgPos};` : ""}` : `background:linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);`;
   return `
-<section class="hero" style="min-height:52vh;${bg}">
+<section class="hero${cls ? " " + cls : ""}" style="min-height:52vh;${cls ? "" : bg}">${cls === "hero--montage" ? `
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="images/fotd-staircase.jpg" aria-hidden="true" tabindex="-1"><source src="images/convene-hero.mp4" type="video/mp4"><source src="images/convene-hero.webm" type="video/webm"></video>` : ""}
   <div class="wrap">
     <span class="kicker">${eyebrow}</span>
     <h1>${h1}</h1>
@@ -106,9 +162,9 @@ function hero(eyebrow, h1, lede, ctaRow, photoCaption, photoUrl){
 function ctaRow(buttons){
   return `<div class="cta-row">${buttons.map(([cls,href,label]) => `<a class="btn ${cls}" href="${href}">${label}</a>`).join("")}</div>`;
 }
-function card({tag, h3, p, next, link, photo, photoUrl, photoAlt}){
+function card({tag, h3, p, next, link, photo, photoUrl, photoAlt, photoFit, photoFocus, photoPos}){
   const photoBlock = photoUrl
-    ? `<div class="card-photo"><img class="real-img" src="${photoUrl}" alt="${photoAlt||h3}"></div>`
+    ? `<div class="card-photo${photoFit ? ` card-photo--${photoFit}` : ""}"${photoFocus ? ` style="--focus:${photoFocus};"` : ""}><img class="real-img" src="${photoUrl}" alt="${photoAlt||h3}"${photoPos ? ` style="object-position:${photoPos};"` : ""}></div>`
     : (photo ? `<div class="card-photo photo-ph"><span>${photo}</span></div>` : "");
   return `<div class="card">
     ${photoBlock}
@@ -158,12 +214,12 @@ write("convene.html", layout({
   title: "Convene",
   description: "Festival of the Diaspora, Diaspora Dialogues, and Sixth Region Summit: the convenings where Project on Belonging builds trust.",
   body: `
-${hero("01 of 04 · Convene", "We convene.", "We bring people into the same room. Trust starts there. Across three convenings and three continents, leaders, institutions, entrepreneurs, and communities build the relationships that make everything else on this platform possible.", "", "Festival of the Diaspora, San Juan", IMG.fotdStaircase)}
+${hero("01 of 04 · Convene", "We convene.", "We bring people into the same room. Trust starts there. Across three convenings and three continents, leaders, institutions, entrepreneurs, and communities build the relationships that make everything else on this platform possible.", "", "Cali, Colombia", IMG.fotdStaircase, undefined, "hero--montage")}
 ${section(`
   <div class="grid grid-3">
     ${card({tag:"Flagship", h3:"Festival of the Diaspora", p:"Three days where leaders, institutions, entrepreneurs, and communities build trust and long-term collaboration. Next: Santiago de Cali, Colombia, February 25 to 27, 2027.", link:["festival-of-the-diaspora.html","Explore the Festival"], photoUrl:IMG.fotdStaircase, photoAlt:"Festival of the Diaspora, formal group photo"})}
     ${card({tag:"International", h3:"Diaspora Dialogues", p:"Our leadership convening on the African continent, focused on cross-border relationships and collaboration across the diaspora. Next: Accra, Ghana, mid-July 2027.", link:["diaspora-dialogues.html","Explore Dialogues"], photoUrl:IMG.diasporaDialogues, photoAlt:"Diaspora Dialogues group photo"})}
-    ${card({tag:"U.S. South", h3:"Sixth Region Summit", p:"Our U.S. convening, held every two years in the American South, on regional investment, civic participation, and economic opportunity. Next: Atlanta, Georgia, 2027.", link:["sixth-region-summit.html","Explore the Summit"], photo:"Photo: Sixth Region Summit (Atlanta)"})}
+    ${card({tag:"U.S. South", h3:"Sixth Region Summit", p:"Our U.S. convening, held every two years in the American South, on regional investment, civic participation, and economic opportunity. Next: Atlanta, Georgia, 2027.", link:["sixth-region-summit.html","Explore the Summit"], photoUrl:"images/concordia-group.jpg", photoAlt:"Leaders gathered on stage at the Concordia Summit", photoPos:"50% 35%"})}
   </div>
   <div style="margin-top:2em;">${ctaRow([["btn-primary","partner-with-us.html","Sponsor a Convening"]])}</div>
 `)}
@@ -222,7 +278,7 @@ write("sixth-region-summit.html", layout({
   title: "Sixth Region Summit",
   description: "Sixth Region Summit is Project on Belonging's biennial U.S. convening in the American South, next in Atlanta, Georgia, 2027.",
   body: `
-${hero("Convene · American South", "Sixth Region Summit", "Our U.S. convening, held every two years in the American South, on regional investment, civic participation, and economic opportunity.", ctaRow([["btn-primary","partner-with-us.html","Get Notified"]]), "[Photo pending: Atlanta summit]")}
+${hero("Convene · American South", "Sixth Region Summit", "Our U.S. convening, held every two years in the American South, on regional investment, civic participation, and economic opportunity.", ctaRow([["btn-primary","partner-with-us.html","Get Notified"]]), "Leaders at the Concordia Summit", "images/concordia-group.jpg", "50% 62%")}
 ${section(`
   <h2>Why "Sixth Region"</h2>
   <p style="max-width:680px;">The African Union calls the diaspora its sixth region. Sixth Region Summit is where that region meets at home, treating the American South as a region with its own history, institutions, and stake in the platform's work, not a side note to the international conversation.</p>
@@ -240,11 +296,11 @@ write("connect.html", layout({
   title: "Connect",
   description: "Palante Labs and PoB Studios: how Project on Belonging keeps the relationship going after a convening ends.",
   body: `
-${hero("02 of 04 · Connect", "We connect.", "We keep the relationship going after the room empties. Palante Labs turns an introduction into a working relationship. PoB Studios tells the story so it reaches everyone who was not in the room.", "", "Diaspora Dinner, Quibdó, Colombia", IMG.colombiaDinner)}
+${hero("02 of 04", "We connect.", "We keep the relationship going after the room empties. Palante Labs turns an introduction into a working relationship. PoB Studios tells the story so it reaches everyone who was not in the room.", "", "Diaspora Dinner, Quibdó, Colombia", IMG.colombiaDinner)}
 ${section(`
   <div class="grid grid-2">
-    ${card({tag:"Residency", h3:"Palante Labs", p:"A residential exchange based in Cali, Colombia. Leaders and entrepreneurs who met at a convening live and work alongside each other, in both directions.", link:["palante-labs.html","Learn About Palante Labs"], photoUrl:IMG.petronio, photoAlt:"Petronio Alvarez Festival delegation"})}
-    ${card({tag:"Media", h3:"PoB Studios", p:"Documentary, podcast, photography, and speaking. Studios tells the stories of the people in this network.", link:["pob-studios.html","Explore PoB Studios"], photoUrl:IMG.etnicaTv, photoAlt:"PoB Studios TV interview"})}
+    ${card({tag:"Residency", h3:"Palante Labs", p:"A residential exchange based in Cali, Colombia. Leaders and entrepreneurs who met at a convening live and work alongside each other, in both directions.", link:["palante-labs.html","Learn About Palante Labs"], photoUrl:IMG.petronio, photoAlt:"Petronio Alvarez Festival delegation", photoFit:"fill"})}
+    ${card({tag:"Media", h3:"PoB Studios", p:"Documentary, podcast, photography, and speaking. Studios tells the stories of the people in this network.", link:["pob-studios.html","Explore PoB Studios"], photoUrl:IMG.etnicaTv, photoAlt:"PoB Studios TV interview", photoFit:"full"})}
   </div>
 `, {alt:true, dot:true})}
 `,
@@ -311,7 +367,8 @@ write("collaborate.html", layout({
   body: `
 ${hero("03 of 04 · Collaborate", "We collaborate.", "We help institutions turn trusted relationships into strategy. Expectant Advisory is how foundations, universities, companies, and public agencies act on the relationships they have built here.", "", "PREA Conference, Washington, D.C.", IMG.preaConf)}
 ${section(`
-  <div class="card" style="max-width:680px;background:var(--navy-light);">
+  <div class="card card--feature">
+    <div class="card-photo"><img class="real-img" src="images/prea-panel.jpg" alt="Panel discussion at the PREA Conference, Washington, D.C."></div>
     <div class="card-body">
       <span class="tag">Advisory</span>
       <h3>Expectant Advisory</h3>
@@ -320,7 +377,7 @@ ${section(`
     </div>
   </div>
   <div style="margin-top:1.5em;">${ctaRow([["btn-primary","partner-with-us.html","Start a Conversation"]])}</div>
-`)}
+`, {dot:true})}
 `,
   related: [["connect.html","Connect"],["invest.html","Invest"]],
 }));
@@ -359,8 +416,8 @@ write("invest.html", layout({
 ${hero("04 of 04 · Invest", "We invest.", "We move capital and customers to the entrepreneurs in our network. Palante Capital backs the businesses. The Marketplace puts them in front of the people ready to buy, fund, or partner.", "", "Festival of the Diaspora award presentation", IMG.pitchCompetition)}
 ${section(`
   <div class="grid grid-2">
-    ${card({tag:"Fund", h3:"Palante Capital", p:"Our investment fund, headquartered in Santiago de Cali, built to back small and medium-sized businesses across Colombia, Brazil, and Africa.", link:["palante-capital.html","Request Fund Information"]})}
-    ${card({tag:"Marketplace", h3:"Marketplace", p:"Pitch competitions, an exhibition hall, and industry compacts that put entrepreneurs in front of sponsors, buyers, and investors.", link:["marketplace.html","Explore the Marketplace"], photoUrl:IMG.pitchCompetition, photoAlt:"Festival of the Diaspora award presentation"})}
+    ${card({tag:"Fund", h3:"Palante Capital", p:"Our investment fund, headquartered in Santiago de Cali, built to back small and medium-sized businesses across Colombia, Brazil, and Africa.", link:["palante-capital.html","Request Fund Information"], photoUrl:"images/palante-capital.jpg", photoAlt:"Two men in conversation at an event in Cali, Colombia", photoFit:"fill", photoFocus:"50% 30%"})}
+    ${card({tag:"Marketplace", h3:"Marketplace", p:"Pitch competitions, an exhibition hall, and industry compacts that put entrepreneurs in front of sponsors, buyers, and investors.", link:["marketplace.html","Explore the Marketplace"], photoUrl:IMG.pitchCompetition, photoAlt:"Festival of the Diaspora award presentation", photoFit:"fill"})}
   </div>
 `, {alt:true, dot:true})}
 `,
@@ -397,7 +454,7 @@ write("marketplace.html", layout({
 ${hero("Invest · Marketplace", "Marketplace", "Pitch competitions, an exhibition hall, and industry compacts that put entrepreneurs in front of sponsors, buyers, and investors who already trust the introduction.", ctaRow([["btn-primary","partner-with-us.html","Join an Industry Compact"]]), "Festival of the Diaspora award presentation", IMG.pitchCompetition)}
 ${section(`
   <div class="grid grid-4" style="margin-top:1em;">
-    ${card({h3:"Pitch Competition", p:"Black Ambition and Casa Innovation bring their pitch competitions to the Festival stage every year.", photoUrl:IMG.pitchCompetition, photoAlt:"Festival of the Diaspora award presentation"})}
+    ${card({h3:"Pitch Competition", p:"Black Ambition and Casa Innovation bring their pitch competitions to the Festival stage every year.", photoUrl:IMG.pitchCompetition, photoAlt:"Festival of the Diaspora award presentation", photoFit:"fill"})}
     ${card({h3:"Exhibition Hall", p:"40+ entrepreneurs exhibited at the Medellin Festival, in front of sponsors and investors already in the room.", photoUrl:IMG.feiraPreta, photoAlt:"Feira Preta exhibition market, Brazil"})}
     ${card({h3:"Industry Compacts", p:"Precious metals and workforce development compacts connect entrepreneurs directly to institutional buyers."})}
     ${card({h3:"Casa Innovation", p:"Dedicated support for underestimated entrepreneurs building their first real foothold in the market."})}
@@ -443,7 +500,7 @@ ${section(`
     <div>
       <h2>Our founder</h2>
       <p style="max-width:520px;">Cordell Carter founded Project on Belonging, Festival of the Diaspora, and Expectant Advisory. He curates more than three dozen off the record leadership seminars a year, reaching more than 1,000 leaders.</p>
-      ${ctaRow([["btn-ghost","#","Bio and Speaking Requests"]])}
+      ${ctaRow([["btn-ghost","partner-with-us.html","Bio and Speaking Requests"]])}
     </div>
   </div>
 `)}
@@ -475,13 +532,15 @@ ${section(`
 `, {alt:true, dot:true})}
 ${section(`
   <h2>Tell us what you want to achieve</h2>
-  <form class="contact-form" style="margin-top:1.3em;">
-    <div><label for="name">Your name</label><input id="name" type="text"></div>
-    <div><label for="org">Organization</label><input id="org" type="text"></div>
-    <div><label for="pemail">Email address</label><input id="pemail" type="email"></div>
+  <form class="contact-form" name="partner" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" data-success="Thank you. We received your message and will be in touch." style="margin-top:1.3em;">
+    <input type="hidden" name="form-name" value="partner">
+    <p hidden><label>Leave this field empty: <input name="bot-field"></label></p>
+    <div><label for="name">Your name</label><input id="name" name="name" type="text" autocomplete="name" required></div>
+    <div><label for="org">Organization</label><input id="org" name="organization" type="text" autocomplete="organization"></div>
+    <div><label for="pemail">Email address</label><input id="pemail" name="email" type="email" autocomplete="email" required></div>
     <div>
       <label for="interest">I am interested in</label>
-      <select id="interest">
+      <select id="interest" name="interest">
         <option>Sponsoring a convening</option>
         <option>Working with Expectant Advisory</option>
         <option>Joining an industry compact</option>
@@ -489,8 +548,9 @@ ${section(`
         <option>Something else</option>
       </select>
     </div>
-    <div><label for="goal">What do you want to achieve?</label><textarea id="goal"></textarea></div>
+    <div><label for="goal">What do you want to achieve?</label><textarea id="goal" name="message"></textarea></div>
     <button class="btn btn-primary" type="submit" style="justify-self:start;">Send Message</button>
+    <p class="form-status" role="status" aria-live="polite"></p>
   </form>
   <p style="margin-top:1.5em;">Prefer email? Write to us directly at <a href="mailto:info@projectonbelonging.org">info@projectonbelonging.org</a>.</p>
 `)}

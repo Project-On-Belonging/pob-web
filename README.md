@@ -23,6 +23,7 @@ expectant-advisory.html
 palante-capital.html, marketplace.html
 
 styles.css                     the whole design system (one file, plain CSS vars)
+site.js                        mobile menu + form submission (progressive enhancement, no dependencies)
 images/                        real client photos + video-frame thumbnails
 generate.js                    the Node script that generated every page below index.html
                                 from shared layout/card/hero helpers — edit this, not the
@@ -39,6 +40,21 @@ generate.js                    the Node script that generated every page below i
 - `--cream` (#FFFDFA) — text on navy, never a section background
 - Headlines: **Big Shoulders Display** (loaded from Google Fonts in `styles.css`)
 - Body: **Inter**
+
+## Motion
+
+All animation lives in the `Motion` block at the end of `styles.css` plus the "Motion"
+section of `site.js`, so it applies to every page without touching any HTML. It is
+subtle and fully opt-out: visitors with `prefers-reduced-motion` (or no JS) get the plain
+static page.
+
+- Hero copy rises in on load; the hero photo settles from a slight zoom.
+- Sections and cards fade up as they scroll in (grids and filmstrips stagger).
+- `.stat-num` values count up when scrolled into view (the real value stays in the DOM for
+  screen readers). Years like `2022` roll up from four decades earlier instead of from 0.
+- `.dot-pattern` wipes in on first view, then a soft wave of brighter, larger dots sweeps across it every
+  few seconds (only while on screen).
+- Hover polish: card lift + photo zoom, button lift, nav underline, dropdown fade, pulsing play button.
 
 ## Known gaps / next steps
 
@@ -61,3 +77,11 @@ generate.js                    the Node script that generated every page below i
 - Every image's photographer/source credit should be confirmed before this goes
   live publicly — these came from the client's own Google Drive folder, but
   usage rights weren't part of this pass.
+
+## Forms
+
+The newsletter (homepage) and "Tell us what you want to achieve" (Partner With Us) forms are
+written for [Netlify Forms](https://docs.netlify.com/forms/setup/) (`data-netlify`, honeypot,
+`form-name`). They submit via `site.js` and show a success or error message. On a host without
+a form backend the error message appears (with the `info@` address as a fallback), so point
+them at your real backend before launch.
