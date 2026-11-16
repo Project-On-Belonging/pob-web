@@ -3,6 +3,14 @@
 Plain HTML/CSS, no build step. Open `index.html` directly in a browser, or run a
 local server (`python3 -m http.server`) from this folder.
 
+## Local development
+
+```bash
+npm run dev
+```
+
+Then open [http://localhost:3000](http://localhost:3000). (`npm start` does the same.)
+
 ## Structure
 
 ```
